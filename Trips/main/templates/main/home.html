@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+  Life is a journey
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+
+    <div class="text-center mb-4">
+      <h1 class="display-5 fw-bold">Life is a journey, <span class="text-primary">share it</span> !</h1>
+      <p class="lead">Share your trips and inspire others to explore.</p>
+    </div>
+
+   
+    <div class="search-bar rounded-4 shadow p-3 bg-white">
+      <form method="GET" action="" class="row g-2 align-items-center justify-content-center">
+        <div class="col-md-4">
+          <input type="text" name="search" class="form-control" placeholder="Choose destination">
+        </div>
+        <div class="col-md-4">
+          <select name="category" class="form-select">
+            <option value="">All Categories</option>
+            <option value="adventure">Adventure</option>
+            <option value="historical">Historical</option>
+            <option value="beach">Beach</option>
+            <option value="mountain">Mountain</option>
+            <option value="camping">Camping</option>
+            <option value="city">City</option>
+          </select>
+        </div>
+        <div class="col-md-2 d-grid">
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">search</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+ <div class="content-container mt-3">
+      <h2>Page Content Title</h2>
+      <p>This is the content of the page appearing clearly on top of the background, below the search bar.</p>
+   
+    </div>
+   
+  </div>
+</section>
+{% endblock %}

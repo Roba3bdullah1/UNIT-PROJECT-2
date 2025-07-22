@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<section class="trips d-flex flex-column py-5" style="min-height: calc(100vh - 80px);">
+  <div class="container flex-grow-1">
+    <div class="row g-4">
+
+     {% for trip in trips %}
+<div class="col-12 col-sm-6 col-md-4">
+  <div class="card trip-card h-100 shadow-sm">
+    <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
+    <div class="card-body">
+      <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
+      <h5 class="card-title">{{ trip.title }}</h5>
+      <p class="card-text text-muted">{{ trip.location }}</p>
+      <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ trip.title }}</h2>
+  <p>{{ trip.description }}</p>
+  <p>Location: {{ trip.location }}</p>
+  <p>Category: {{ trip.category }}</p>
+  <p>Date: {{ trip.date }}</p>
+  {% if trip.image %}
+    <img src="{{ trip.image.url }}" alt="{{ trip.title }}" width="400">
+  {% endif %}
+
+  <a href="{% url 'edit_trip' trip.id %}">Edit</a>
+  <a href="{% url 'delete_trip' trip.id %}">Delete</a>
+  <a href="{% url 'trip_list' %}">Back to All Trips</a>
+{% endblock %}
