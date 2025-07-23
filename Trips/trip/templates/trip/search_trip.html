@@ -1,0 +1,67 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+<section class="trips d-flex flex-column py-5" style="min-height:100vh;">
+  <div class="container flex-grow-1">
+    <div class="content-container p-4 bg-white rounded shadow-sm">
+
+      <div class="text-center mb-4">
+        <h1 class="display-9">Search results for "{{ search_input }}"</h1>
+        <p class="lead">Find trips by title, city, or category.</p>
+      </div>
+
+      
+        <form method="GET" action="{% url 'trip:search_trip_view' %}" class="row g-2 align-items-center justify-content-center">
+          <div class="col-md-4">
+            <input 
+              type="text" 
+              name="search" 
+              class="form-control" 
+              placeholder="Search by title or city" 
+              value="{{ search_input|default:'' }}">
+          </div>
+          <div class="col-md-4">
+            <select name="category" class="form-select">
+              <option value="" {% if not category_filter %}selected{% endif %}>All Categories</option>
+              {% for value, label in categories %}
+                <option value="{{ value }}" {% if category_filter == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">
+              <span class="material-symbols-outlined">search</span>
+            </button>
+          </div>
+        </form>
+    
+      <br></br>
+      <div class="row g-4">
+        {% if trips %}
+          {% for trip in trips %}
+            <div class="col-12 col-sm-6 col-md-4">
+              <div class="card trip-card h-100 shadow-sm">
+                <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
+                <div class="card-body">
+                  <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
+                  <h5 class="card-title">{{ trip.title }}</h5>
+                  <p class="card-text text-muted">📍 {{ trip.location }}</p>
+                  <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center">No trips found matching your criteria.</p>
+         
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

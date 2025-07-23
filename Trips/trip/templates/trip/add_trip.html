@@ -6,12 +6,12 @@
 <section class="hero py-5">
   <div class="container">
 
-    <div class="text-center mb-4">
-      <h1 class="display-5 fw-bold">Add a New Trip</h1>
+   <div class="content-container mx-auto px-5 pt-5 pb-3 bg-white rounded shadow-sm mb-5" style="max-width: 800px;">
+
+      <div class="text-center mb-4">
+      <h1 class="display-9">Add Your Trip</h1>
       <p class="lead">Share your new journey with the community.</p>
     </div>
-
-    <div class="content-container mx-auto p-5 bg-white rounded shadow-sm mb-5" style="max-width: 800px;">
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.non_field_errors }}

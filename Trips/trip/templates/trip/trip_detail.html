@@ -1,91 +1,86 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="content-container pt-5 px-4 bg-white rounded shadow-sm">
 
- <div class="content-container">
-<div class="container my-5">
+      <div class="row g-4 align-items-start">
 
-  <div class="row g-4 align-items-start">
-
-    
-    <div class="col-md-5">
-      <div class="card shadow-sm">
-        {% if trip.image %}
-          <img src="{{ trip.image.url }}" alt="{{ trip.title }}" class="card-img-top" style="object-fit: cover; height: 350px;">
-        {% endif %}
-      </div>
-    </div>
-
-    
-    <div class="col-md-7">
-      
-        <h2 class="mb-3">{{ trip.title }}</h2>
-        <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
-        <p><strong>Location:</strong> 📍 {{ trip.location }}</p>
-        <p>{{ trip.description }}</p>
-        <p><strong>Date:</strong> {{ trip.date }}</p>
-        <p><strong>Publisher:</strong> {{ trip.publisher_name }}</p>
-
-        <div class="d-flex justify-content-end gap-2 mt-4">
-          <a href="{% url 'trip:update_trip_view' trip.id %}" class="btn btn-dark">Update</a>
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+        <div class="col-md-5">
+          <div class="card shadow-sm">
+            {% if trip.image %}
+              <img src="{{ trip.image.url }}" alt="{{ trip.title }}" class="card-img-top" style="object-fit: cover; height: 350px;">
+            {% endif %}
+          </div>
         </div>
-     
-    </div>
 
-  </div>
+        <div class="col-md-7">
+          <h2 class="mb-3 fw-bold">{{ trip.title }}</h2>
+          <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
+          <p><strong>Location:</strong> 📍 {{ trip.location }}</p>
+          <p>{{ trip.description }}</p>
+          <p><strong>Date:</strong> {{ trip.date }}</p>
+          <p><strong>Publisher:</strong> {{ trip.publisher_name }}</p>
 
- <div class="mt-5">
-  <h3 class="mb-4">Comments ({{ comments.count }})</h3>
+          <div class="d-flex justify-content-start gap-2 mt-4">
+            <a href="{% url 'trip:update_trip_view' trip.id %}" class="btn btn-dark">Update</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+          </div>
+        </div>
 
-  <div class="d-flex flex-column gap-2 mb-4">
-    {% for comment in comments %}
-      <div class="card p-2" style="max-width: 350px; align-self: flex-start;">
-        <p class="mb-1" style="font-size: 0.9rem;">{{ comment.comment }}</p>
-        <small class="text-muted" style="font-size: 0.75rem;">By {{ comment.name }} on {{ comment.created_at }}</small>
       </div>
-    {% empty %}
-      <p>No comments yet.</p>
-    {% endfor %}
-  </div>
 
-  <h5 class="mt-4">Add Comment</h5>
-  <form action="{% url 'trip:add_comment_view' trip.id %}" method="post" class="d-flex flex-column gap-2" style="max-width: 350px;">
-    {% csrf_token %}
-    <input type="text" name="name" class="form-control" placeholder="Your Name" required minlength="3">
-    <textarea name="comment" class="form-control" placeholder="Your Comment" required minlength="3"></textarea>
-    <button type="submit" class="btn btn-primary">Add Comment</button>
-  </form>
-</div>
+      <div class="mt-5">
+        <h3 class="mb-4">Comments ({{ comments.count }})</h3>
 
-
-<div class="mt-5">
-  <h3 class="mb-4">Related Trips</h3>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    {% for related in related_trips %}
-      <div class="col">
-        <div class="card trip-card h-100 shadow-sm" style="max-width: 300px; margin: 0 auto;">
-          <a href="{% url 'trip:trip_detail_view' related.id %}" class="text-decoration-none text-dark">
-            <img src="{{ related.image.url }}" alt="{{ related.title }}" class="card-img-top" style="object-fit: cover; height: 150px;">
-            <div class="card-body p-2">
-              <span class="badge bg-primary mb-1" style="font-size: 0.7rem;">{{ related.get_category_display }}</span>
-              <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ related.title }}</h6>
-              <p class="card-text text-muted mb-0" style="font-size: 0.8rem;">📍 {{ related.location }}</p>
+        <div class="d-flex flex-column gap-2 mb-4">
+          {% for comment in comments %}
+            <div class="card p-2" style="max-width: 350px; align-self: flex-start;">
+              <p class="mb-1" style="font-size: 0.9rem;">{{ comment.comment }}</p>
+              <small class="text-muted" style="font-size: 0.75rem;">By {{ comment.name }} on {{ comment.created_at }}</small>
             </div>
-          </a>
+          {% empty %}
+            <p>No comments yet.</p>
+          {% endfor %}
+        </div>
+
+        <h5 class="mt-4">Add Comment</h5>
+        <form action="{% url 'trip:add_comment_view' trip.id %}" method="post" class="d-flex flex-column gap-2" style="max-width: 350px;">
+          {% csrf_token %}
+          <input type="text" name="name" class="form-control" placeholder="Your Name" required minlength="3">
+          <textarea name="comment" class="form-control" placeholder="Your Comment" required minlength="3"></textarea>
+          <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+      </div>
+
+      <div class="mt-5">
+        <h3 class="mb-4">Related Trips</h3>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {% for related in related_trips %}
+            <div class="col">
+              <div class="card trip-card h-100 shadow-sm" style="max-width: 300px; margin: 0 auto;">
+                <a href="{% url 'trip:trip_detail_view' related.id %}" class="text-decoration-none text-dark">
+                  <img src="{{ related.image.url }}" alt="{{ related.title }}" class="card-img-top" style="object-fit: cover; height: 150px;">
+                  <div class="card-body p-2">
+                    <span class="badge bg-primary mb-1" style="font-size: 0.7rem;">{{ related.get_category_display }}</span>
+                    <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ related.title }}</h6>
+                    <p class="card-text text-muted mb-0" style="font-size: 0.8rem;">📍 {{ related.location }}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          {% empty %}
+            <p>No related trips available.</p>
+          {% endfor %}
         </div>
       </div>
-    {% empty %}
-      <p>No related trips available.</p>
-    {% endfor %}
+
+    </div>
   </div>
-</div>
+</section>
 
-
-</div>
-
-</div>
-
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -103,7 +98,5 @@
     </div>
   </div>
 </div>
-
-
 
 {% endblock %}

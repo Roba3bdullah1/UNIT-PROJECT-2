@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
 from django.http import HttpRequest, HttpResponse
-
 from .models import Trip,Comment
 from .forms import TripForm
 from django.contrib import messages
+from django.db.models import Q
+from . import views
 
 # Create your views here.
 
@@ -60,15 +61,32 @@ def delete_trip_view(request:HttpRequest, trip_id:int):
 
 
 
+
+
 def search_trip_view(request: HttpRequest):
-    search_input = request.GET.get("search")
-    
+    search_input = request.GET.get("search", "")
+    category_filter = request.GET.get("category", "")
+
+    trips = Trip.objects.all()
     if search_input:
-        trips = Trip.objects.filter(name__icontains=search_input)
-    else:
+        trips = trips.filter(
+            Q(title__icontains=search_input) | Q(location__icontains=search_input)
+        )
+
+    if category_filter:
+        trips = trips.filter(category=category_filter)
+
+    if not search_input and not category_filter:
         trips = Trip.objects.none()
-    
-    return render(request, 'trip/search_trip.html', {'trips': trips, 'search_input': search_input})
+
+    context = {
+        "trips": trips,
+        "search_input": search_input,
+        "category_filter": category_filter,
+        "categories": Trip.Category.choices,  
+    }
+
+    return render(request, "trip/search_trip.html", context)
 
 
 def add_comment_view(request: HttpRequest, trip_id):
