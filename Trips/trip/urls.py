@@ -10,4 +10,7 @@ urlpatterns = [
    path('add/', views.add_trip_view, name= 'add_trip_view'),
    path('update/<trip_id>/', views.update_trip_view, name='update_trip_view'),
    path('delete/<trip_id>/',views.delete_trip_view, name='delete_trip_view'),
+   path('trips/search/', views.search_trip_view, name='search_plant_view'),
+   path('trips/comment/add/<int:trip_id>/', views.add_comment_view, name='add_comment_view'),
+
 ]

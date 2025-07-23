@@ -1,10 +1,74 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
+
+{% block title %}Update Trip{% endblock %}
 
 {% block content %}
-  <h2>Edit Trip: {{ trip.title }}</h2>
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Changes</button>
-  </form>
+<section class="hero py-5">
+  <div class="container">
+
+    <div class="text-center mb-4">
+      <h1 class="display-5 fw-bold">Update Trip</h1>
+      <p class="lead">Edit your trip details and save the changes.</p>
+    </div>
+
+    <div class="content-container mx-auto p-5 bg-white rounded shadow-sm mb-5" style="max-width: 800px;">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="mb-3">
+          {{ form.title.label_tag }}
+          {{ form.title }}
+          {{ form.title.errors }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.location.label_tag }}
+          {{ form.location }}
+          {{ form.location.errors }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.category.label_tag }}
+          {{ form.category }}
+          {{ form.category.errors }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.date.label_tag }}
+          {{ form.date }}
+          {{ form.date.errors }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.description.label_tag }}
+          {{ form.description }}
+          {{ form.description.errors }}
+        </div>
+
+     <div class="mb-3">
+      {{ form.image.label_tag }}
+      {% if trip.image %}
+     <div class="mb-2">
+      <img src="{{ trip.image.url }}" alt="Current Image" style="max-width: 150px; height: auto;">
+     </div>
+      {% endif %}
+      {{ form.image }}
+      {{ form.image.errors }}
+</div>
+
+        <div class="mb-3">
+          {{ form.publisher_name.label_tag }}
+          {{ form.publisher_name }}
+          {{ form.publisher_name.errors }}
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-success rounded-pill px-4">Update Trip</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</section>
 {% endblock %}

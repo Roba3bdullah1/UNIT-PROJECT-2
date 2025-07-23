@@ -13,8 +13,8 @@
       <p class="lead">Share your trips and inspire others to explore.</p>
     </div>
 
-   
-    <div class="search-bar rounded-4 shadow p-3 bg-white">
+  
+    <div class="search-bar rounded-4 shadow p-3 bg-white mb-5">
       <form method="GET" action="" class="row g-2 align-items-center justify-content-center">
         <div class="col-md-4">
           <input type="text" name="search" class="form-control" placeholder="Choose destination">
@@ -36,14 +36,32 @@
           </button>
         </div>
       </form>
+    </div>
 
+
+    <div class="content-container">
+        <div class="lasted-tripss-title">
+      <h2> Lasted Trips </h2>
     </div>
- <div class="content-container mt-3">
-      <h2>Page Content Title</h2>
-      <p>This is the content of the page appearing clearly on top of the background, below the search bar.</p>
-   
+      <div class="row g-4">
+        {% for trip in trips %}
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card trip-card h-100 shadow-sm">
+            <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
+            <div class="card-body">
+              <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
+              <h5 class="card-title">{{ trip.title }}</h5>
+              <p class="card-text text-muted"> 📍 {{ trip.location }}</p>
+              <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No trips found.</p>
+        {% endfor %}
+      </div>
     </div>
-   
+
   </div>
 </section>
 {% endblock %}

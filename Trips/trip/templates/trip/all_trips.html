@@ -1,25 +1,51 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-<section class="trips d-flex flex-column py-5" style="min-height: calc(100vh - 80px);">
+<section class="trips d-flex flex-column py-5" style="min-height:100vh;">
   <div class="container flex-grow-1">
-    <div class="row g-4">
+    <div class="content-container p-4 bg-white rounded shadow-sm">
 
-     {% for trip in trips %}
-<div class="col-12 col-sm-6 col-md-4">
-  <div class="card trip-card h-100 shadow-sm">
-    <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
-    <div class="card-body">
-      <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
-      <h5 class="card-title">{{ trip.title }}</h5>
-      <p class="card-text text-muted">{{ trip.location }}</p>
-      <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
-    </div>
-  </div>
-</div>
-{% endfor %}
+     
+      <div class="row mb-3">
+        <div class="col-md-6 d-flex align-items-center">
+          <h2 class="mb-0" style="font-size: 1.5rem;">All Trips</h2>
+        </div>
+        <div class="col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0">
+          <form method="get" class="d-flex align-items-center gap-2 w-70 w-md-auto">
+            <label for="category" class="mb-0 me-1" style="font-size: 0.9rem;">Category:</label>
+            <select name="category" id="category" class="form-select form-select-sm" style="width: auto; min-width: 150px;">
+              <option value="all">All</option>
+              {% for value, label in CategoryChoices %}
+                <option value="{{ value }}" {% if value == selected_category %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+          </form>
+        </div>
+      </div>
 
-    </div>
+    
+      <div class="row g-4">
+        {% for trip in trips %}
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card trip-card h-100 shadow-sm">
+              <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
+              <div class="card-body">
+                <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
+                <h5 class="card-title">
+                  <a href="{% url 'trip:trip_detail_view' trip.id %}" class="text-decoration-none text-dark">
+                    {{ trip.title }}
+                  </a>
+                </h5>
+                <p class="card-text text-muted">📍 {{ trip.location }}</p>
+                <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div> 
   </div>
 </section>
 {% endblock %}

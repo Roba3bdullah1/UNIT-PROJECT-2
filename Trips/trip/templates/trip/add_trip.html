@@ -3,15 +3,15 @@
 {% block title %}Add New Trip{% endblock %}
 
 {% block content %}
-<section class="hero">
+<section class="hero py-5">
   <div class="container">
-   
+
     <div class="text-center mb-4">
       <h1 class="display-5 fw-bold">Add a New Trip</h1>
       <p class="lead">Share your new journey with the community.</p>
     </div>
 
-    <div class="content-container mx-auto p-4 bg-white rounded shadow-sm mb-5" style="max-width: 600px;">
+    <div class="content-container mx-auto p-5 bg-white rounded shadow-sm mb-5" style="max-width: 800px;">
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.non_field_errors }}
@@ -48,14 +48,14 @@
 
         <div class="mb-3">
           {{ form.image.label_tag }}
-          {{ form.image }}
+          {{ form.image}}
           {{ form.image.errors }}
         </div>
 
         <div class="mb-3">
-      {{ form.publisher_name.label_tag }}
-      {{ form.publisher_name }}
-      {{ form.publisher_name.errors }}
+          {{ form.publisher_name.label_tag }}
+          {{ form.publisher_name }}
+          {{ form.publisher_name.errors }}
         </div>
 
         <div class="text-center">
@@ -63,7 +63,7 @@
         </div>
       </form>
     </div>
+
   </div>
 </section>
 {% endblock %}
-

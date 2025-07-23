@@ -26,5 +26,13 @@ class Trip(models.Model):
         default=Category.CITY)
     image = models.ImageField(upload_to="images/", default="images/default.jpg")
 
+
+
+class Comment(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    name = models.CharField(max_length=1024)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
    
 

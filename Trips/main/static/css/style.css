@@ -35,6 +35,12 @@ body {
   flex-wrap: wrap;
 }
 
+.lasted-tripss-title{
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+color: #333;
+
+}
+
 footer {
   background-color: white;
   box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
@@ -110,11 +116,7 @@ footer {
   user-select: none;
 }
 
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active {
-  color: #0f49b4 !important;
-  text-decoration: underline;
-}
+
 
 
 .navbar-right {
@@ -298,6 +300,7 @@ body.dark-mode .hero-search input {
   border-radius: 16px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
 }
 
 .trip-card:hover {
@@ -324,6 +327,7 @@ body.dark-mode .hero-search input {
   border-radius: 30px;
   font-weight: 500;
 }
+
 
 ---------
 body.dark-mode .hero {
