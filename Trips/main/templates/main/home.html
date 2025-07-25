@@ -5,39 +5,51 @@
 
 {% block content %}
 <section class="hero">
-  <div class="container">
+  <div class="container ">
 
     <div class="text-center mb-4">
       <h1 class="display-5 fw-bold">Life is a journey, <span class="text-primary">share it</span> !</h1>
       <p class="lead">Share your trips and inspire others to explore.</p>
 
 
-   <div class="search-bar rounded-4 shadow p-3 bg-white my-4">
-      <form method="GET" action="{% url 'trip:search_trip_view' %}" class="row g-2 align-items-center justify-content-center">
-  <div class="col-md-4">
-    <input type="text" name="search" class="form-control" placeholder="Choose destination" value="{{ request.GET.search }}">
-  </div>
-  <div class="col-md-4">
-    <select name="category" class="form-select">
-      <option value="" {% if not request.GET.category %}selected{% endif %}>All Categories</option>
-      {% for value, label in categories %}
-        <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div class="col-md-2 d-grid">
-    <button type="submit" class="btn btn-primary">
-      <span class="material-symbols-outlined">search</span>
-    </button>
-  </div>
-</form>
+   <div class="search-bar rounded-4 shadow p-3 bg-white my-4 ">
+     <form method="GET" action="{% url 'trip:search_trip_view' %}" class="row g-2 align-items-center justify-content-center">
+          <div class="col-md-4">
+            <input 
+              type="text" 
+              name="search" 
+              class="form-control" 
+              placeholder="Search by title or city" 
+              value="{{ search_input|default:'' }}">
+          </div>
+          <div class="col-md-4">
+            <select name="category" class="form-select">
+              <option value="" {% if not category_filter %}selected{% endif %}>All Categories</option>
+              {% for value, label in categories %}
+                <option value="{{ value }}" {% if category_filter == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">
+              <span class="material-symbols-outlined rounded-pill">search</span>
+            </button>
+          </div>
+        </form>
     </div>
 
   
-    <div class="content-container mt-4">
-      <div class="lasted-tripss-title">
-        <h2 class="display-9">Lasted Trips</h2>
-      </div>
+    <div class="content-container mt-5 rounded-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="lasted-tripss-title m-0">
+    <h2 class="mb-0 display-9 fw-bold ">Lasted Trips</h2>
+  </div>
+  <div class="more-link m-0">
+    <a href="{% url 'trip:all_trips_view' %}" class="d-inline-flex align-items-center gap-1">
+      More <span class="material-symbols-outlined">chevron_right</span>
+    </a>
+  </div>
+</div>
       <div class="row g-4">
         {% for trip in trips %}
         <div class="col-12 col-sm-6 col-md-4">
@@ -60,4 +72,3 @@
   </div>
 </section>
 {% endblock %}
-

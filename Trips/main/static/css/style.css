@@ -1,5 +1,4 @@
 html, body {
-  height: 100%;
   margin: 0;
   padding: 0;
   display: flex;
@@ -14,9 +13,11 @@ body {
     linear-gradient(to top, white 0%, rgba(255,255,255,0.3) 90%),
     url('/static/images/sky-light.jpg') center center / cover no-repeat;
   background-attachment: fixed;
+  width: 100%;
   text-align: center;
   color: #333;
-    padding-top: 70px;
+  padding-top: 70px;
+  
 }
 
 
@@ -28,18 +29,12 @@ body {
   background-color: white;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   z-index: 1100;
-  padding: 0.5rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
-.lasted-tripss-title{
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-color: #333;
-
-}
 
 footer {
   background-color: white;
@@ -100,6 +95,7 @@ footer {
 
 .navbar-nav {
   display: flex;
+  font-weight: 200;
   gap: 20px;
   align-items: center;
   margin: 0; 
@@ -112,13 +108,9 @@ footer {
   font-size: 1rem;
   transition: color 0.3s ease;
   text-decoration: none !important;
-  padding: 0.4rem 0.6rem;
   user-select: none;
 }
-
-
-
-
+ 
 .navbar-right {
   display: flex;
   align-items: center;
@@ -207,10 +199,10 @@ footer {
 }
 
 
-.content-container {
+.content-container ,search-bar {
   max-width: 1500px;  
-  width: 95%;        
-  margin: 30px auto 10px;  
+  width: 95%;    
+  margin: 30px auto 50px; 
   padding: 30px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
@@ -222,7 +214,35 @@ footer {
 }
 
 
+.more-link {
+  text-align: right;
+  padding: 20px 40px;
+  text-decoration: none;
+}
+.more-link a {
+  font-weight: 500;
+  text-decoration: none;
+  color: #0f49b4;
+}
 
+.more-link a:hover {
+  text-decoration: underline;
+}
+
+.more-link a{
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  display:none;
+  align-items:center;
+  gap: 4px;
+}
+
+.more-link a:hover {
+  text-decoration: none;
+
+  color: rgb(9, 48, 137);
+}
 
 @media (max-width: 768px) {
   .navbar {
@@ -282,7 +302,7 @@ body.dark-mode .hero-search input {
 
 .hero {
   padding-top: 160px; 
-  padding-bottom: 0; 
+  padding-bottom: 80px;
   text-align: center;
   min-height: 100vh;
   margin-bottom: 0;
@@ -320,7 +340,7 @@ body.dark-mode .hero-search input {
 .trip-card .badge {
   font-size: 0.8rem;
   padding: 0.4rem 0.8rem;
-  border-radius: 12px;
+  border-radius: 20px;
 }
 
 .trip-card .btn {
@@ -338,4 +358,28 @@ body.dark-mode .hero {
 
 body.dark-mode .hero {
   background-color: rgba(0, 0, 0, 0.6); 
+}
+
+
+.more-link {
+  text-align: right;
+  padding: 20px 40px;
+  text-decoration: none;
+}
+
+.more-link a {
+  display: none;
+  font-weight: 500;
+  font-size: 20px;
+  text-decoration: none;
+  color: #0f49b4;
+  align-items: center;
+  gap: 4px; 
+
+
+}
+
+.more-link a:hover {
+  text-decoration: none;
+  color: rgb(9, 48, 137);
 }

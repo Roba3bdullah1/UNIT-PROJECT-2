@@ -3,7 +3,7 @@
 {% block content %}
 <section class="trips d-flex flex-column py-5" style="min-height:100vh;">
   <div class="container flex-grow-1">
-    <div class="content-container p-4 bg-white rounded shadow-sm">
+   <div class="content-container mt-5">
 
      
       <div class="row mb-3">
@@ -19,7 +19,7 @@
                 <option value="{{ value }}" {% if value == selected_category %}selected{% endif %}>{{ label }}</option>
               {% endfor %}
             </select>
-            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill">Filter</button>
           </form>
         </div>
       </div>
