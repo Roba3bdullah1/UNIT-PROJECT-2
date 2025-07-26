@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<section class="py-5 d-flex justify-content-center">
+
+  <div class="content-container p-4 bg-white rounded-4 shadow-sm" style="max-width: 800px; width: 100%;">
+
+    <h2 class="mb-4 text-center">Find Your Inspiration</h2>
+
+    
+    <form method="get" class="mb-4">
+      <div class="d-flex justify-content-center gap-2 flex-wrap">
+        {% for value, label in categories %}
+          <button type="submit" name="category" value="{{ value }}" class="btn {% if selected_category == value %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill">
+            {{ label }}
+          </button>
+        {% endfor %}
+      </div>
+    </form>
+
+    {% if video %}
+      <div class="ratio ratio-16x9 mb-3 mx-auto" style="max-width: 700px;">
+        <iframe src="{{ video.url }}" title="{{ video.title }}" allowfullscreen></iframe>
+      </div>
+      <h5 class="text-center">{{ video.title }}</h5>
+      <span class="badge bg-secondary d-inline-block mx-auto">{{ video.get_category_display }}</span>
+    {% elif selected_category %}
+      <p class="text-center">No videos available for this category.</p>
+    {% else %}
+      <p class="text-center">Select a category to get inspired!</p>
+    {% endif %}
+    
+  </div>
+</section>
+
+{% endblock %}

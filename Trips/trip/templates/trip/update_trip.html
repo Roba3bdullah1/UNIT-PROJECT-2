@@ -8,10 +8,10 @@
 
     <div class="content-container mx-auto p-5 bg-white rounded shadow-sm mb-5" style="max-width: 800px;">
       <div class="text-center mb-4">
-      <h1 class="display-9">Update Trip</h1>
-      <p class="lead">Edit your trip details and save the changes.</p>
-    </div>
-    
+        <h1 class="display-9">Update Trip</h1>
+        <p class="lead">Edit your trip details and save the changes.</p>
+      </div>
+
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.non_field_errors }}
@@ -46,16 +46,24 @@
           {{ form.description.errors }}
         </div>
 
-     <div class="mb-3">
-      {{ form.image.label_tag }}
-      {% if trip.image %}
-     <div class="mb-2">
-      <img src="{{ trip.image.url }}" alt="Current Image" style="max-width: 150px; height: auto;">
-     </div>
-      {% endif %}
-      {{ form.image }}
-      {{ form.image.errors }}
-</div>
+        <div class="mb-3">
+             {{ form.image.label_tag }}
+        {% if trip.image %}
+  <div class="mb-2">
+    <img  class="rounded-4" src="{{ trip.image.url }}" alt="Current Image" style="max-width: 200px; height: auto;">
+  </div>
+{% endif %}
+        
+
+  
+        <div class="mb-3">
+          <label class="form-label">Trip Location on Map : </label>
+          <div id="map" class="rounded-4" style="height: 200px;"></div>
+        </div>
+
+    
+        <input type="hidden" id="latitude" name="latitude" value="{{ trip.latitude }}">
+        <input type="hidden" id="longitude" name="longitude" value="{{ trip.longitude }}">
 
         <div class="mb-3">
           {{ form.publisher_name.label_tag }}
@@ -71,4 +79,54 @@
 
   </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  var currentLat = parseFloat('{{ trip.latitude|default:"0" }}');
+  var currentLng = parseFloat('{{ trip.longitude|default:"0" }}');
+  var zoomLevel = (currentLat && currentLng) ? 3 : 2;
+
+  var map = L.map('map').setView([currentLat, currentLng], zoomLevel);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  var marker;
+
+  if (currentLat && currentLng) {
+    marker = L.marker([currentLat, currentLng]).addTo(map);
+  }
+
+  var geocoder = L.Control.geocoder({
+    defaultMarkGeocode: true
+  })
+  .on('markgeocode', function(e) {
+    var latlng = e.geocode.center;
+
+    if (marker) {
+      map.removeLayer(marker);
+    }
+    marker = L.marker(latlng).addTo(map);
+    map.setView(latlng, 13);
+
+    document.getElementById("latitude").value = latlng.lat;
+    document.getElementById("longitude").value = latlng.lng;
+  })
+  .addTo(map);
+
+  function onMapClick(e) {
+    if (marker) {
+      map.removeLayer(marker);
+    }
+    marker = L.marker(e.latlng).addTo(map);
+    document.getElementById("latitude").value = e.latlng.lat;
+    document.getElementById("longitude").value = e.latlng.lng;
+  }
+
+  map.on('click', onMapClick);
+</script>
+
+
 {% endblock %}

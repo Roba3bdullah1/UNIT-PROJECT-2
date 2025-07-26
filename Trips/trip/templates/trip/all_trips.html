@@ -2,13 +2,13 @@
 
 {% block content %}
 <section class="trips d-flex flex-column py-5" style="min-height:100vh;">
-  <div class="container flex-grow-1">
-   <div class="content-container mt-5">
+  <div class="container flex-grow-1 r">
+   <div class="content-container mt-5 rounded-4 ">
 
      
       <div class="row mb-3">
         <div class="col-md-6 d-flex align-items-center">
-          <h2 class="mb-0 display-9 fw-bold ">All Trips</h2>
+          <h3 class="mb-0 display-9 ">All Trips</h3>
         </div>
         <div class="col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0">
           <form method="get" class="d-flex align-items-center gap-2 w-70 w-md-auto">
@@ -19,7 +19,7 @@
                 <option value="{{ value }}" {% if value == selected_category %}selected{% endif %}>{{ label }}</option>
               {% endfor %}
             </select>
-            <button type="submit" class="btn btn-primary btn-sm rounded-pill">Filter</button>
+            <button type="submit" class="btn btn-primary btn-4 rounded-pill">Filter</button>
           </form>
         </div>
       </div>
@@ -28,10 +28,10 @@
       <div class="row g-4">
         {% for trip in trips %}
           <div class="col-12 col-sm-6 col-md-4">
-            <div class="card trip-card h-100 shadow-sm">
+            <div class="card trip-card h-100 ">
               <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
               <div class="card-body">
-                <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
+                <span class="badge category-badge mb-2">{{ trip.get_category_display }}</span>
                 <h5 class="card-title">
                   <a href="{% url 'trip:trip_detail_view' trip.id %}" class="text-decoration-none text-dark">
                     {{ trip.title }}

@@ -8,7 +8,7 @@
   <div class="container ">
 
     <div class="text-center mb-4">
-      <h1 class="display-5 fw-bold">Life is a journey, <span class="text-primary">share it</span> !</h1>
+     <h1 class="display-5 fw-bold">Life is a journey, <span class="text-share">share it</span> !</h1>
       <p class="lead">Share your trips and inspire others to explore.</p>
 
 
@@ -31,21 +31,21 @@
             </select>
           </div>
           <div class="col-md-2 d-grid">
-            <button type="submit" class="btn btn-primary">
-              <span class="material-symbols-outlined rounded-pill">search</span>
+            <button type="submit" class="btn btn-primary rounded-4">
+              <span class="material-symbols-outlined ">search</span>
             </button>
           </div>
         </form>
     </div>
 
   
-    <div class="content-container mt-5 rounded-4">
+    <div class="content-container mt-7 rounded-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
   <div class="lasted-tripss-title m-0">
-    <h2 class="mb-0 display-9 fw-bold ">Lasted Trips</h2>
+    <h3 class="mb-0 display-9 fw-bold ">Lasted Trips</h3>
   </div>
   <div class="more-link m-0">
-    <a href="{% url 'trip:all_trips_view' %}" class="d-inline-flex align-items-center gap-1">
+    <a href="{% url 'trip:all_trips_view' %}" class=" display-9 fw-bold d-inline-flex align-items-center gap-1">
       More <span class="material-symbols-outlined">chevron_right</span>
     </a>
   </div>
@@ -56,7 +56,7 @@
           <div class="card trip-card h-100 shadow-sm">
             <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
             <div class="card-body">
-              <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
+              <span class="badge category-badge mb-2">{{ trip.get_category_display }}</span>
               <h5 class="card-title">{{ trip.title }}</h5>
               <p class="card-text text-muted"> 📍 {{ trip.location }}</p>
               <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>

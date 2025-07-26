@@ -5,13 +5,13 @@
 {% block content %}
 <section class="hero py-5">
   <div class="container">
-
    <div class="content-container mx-auto px-5 pt-5 pb-3 bg-white rounded-4 shadow-sm mb-5" style="max-width: 800px;">
 
       <div class="text-center mb-4">
-      <h1 class=" display-9 fw-bold">Add Your Trip</h1>
+      <h2 class="display-9 ">Add Your Trip</h2>
       <p class="lead">Share your new journey with the community.</p>
     </div>
+
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.non_field_errors }}
@@ -48,9 +48,18 @@
 
         <div class="mb-3">
           {{ form.image.label_tag }}
-          {{ form.image}}
+          {{ form.image }}
           {{ form.image.errors }}
         </div>
+
+    
+        <div class="mb-3">
+          <label class="form-label">Choose Trip Location on Map:</label>
+          <div class=" map rounded-4" id="map" style="height: 400px;"></div>
+        </div>
+
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
 
         <div class="mb-3">
           {{ form.publisher_name.label_tag }}
@@ -66,4 +75,40 @@
 
   </div>
 </section>
+
+{% endblock %}
+
+ {% block extra_js %}
+<script>
+var map = L.map('map').setView([0, 0], 2);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+var marker;
+
+
+var geocoder = L.Control.geocoder({
+  defaultMarkGeocode: true
+})
+.on('markgeocode', function(e) {
+  var latlng = e.geocode.center;
+
+
+  if (marker) {
+    map.removeLayer(marker);
+  }
+
+
+  marker = L.marker(latlng).addTo(map);
+
+  map.setView(latlng, 13);
+
+  document.getElementById("latitude").value = latlng.lat;
+  document.getElementById("longitude").value = latlng.lng;
+})
+.addTo(map);
+</script>
+
 {% endblock %}
