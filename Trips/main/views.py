@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from trip.models import Trip
 from trip.forms import TripForm
-from main.forms import ContactForm
 from django.contrib import messages
 from main.forms import ContactForm
+from main.models import Contact
 
 
 def home_view(request:HttpRequest):
-    trips = Trip.objects.order_by('-date')[0:3]
+    trips = Trip.objects.order_by('-created_at')[0:3]
     categories = Trip.Category.choices  
 
     return render(request, 'main/home.html', { 'trips': trips,'categories': categories })
@@ -25,3 +25,8 @@ def contact_view(request):
     else:
         form = ContactForm()
     return render(request, 'main/contact.html', {'form': form})
+
+def messages_view(request:HttpRequest):
+    messages = Contact.objects.all()
+
+    return render(request, 'main/messages.html', {'messages': messages})

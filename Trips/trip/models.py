@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -25,6 +26,8 @@ class Trip(models.Model):
         choices=Category.choices,
         default=Category.CITY)
     image = models.ImageField(upload_to="images/", default="images/default.jpg")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
 
 
 
