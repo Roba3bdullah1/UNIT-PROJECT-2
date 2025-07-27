@@ -1,37 +1,34 @@
 {% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Inspiration Videos{% endblock %}
 
 {% block content %}
-
 <section class="py-5 d-flex justify-content-center">
-
   <div class="content-container p-4 bg-white rounded-4 shadow-sm" style="max-width: 800px; width: 100%;">
 
-    <h2 class="mb-4 text-center">Find Your Inspiration</h2>
+    <h2 class="mt-4 text-center text-center fs-3">Get Inspired for Your Next Journey</h2>
+    <p class="text-center text-muted mt-1">Please select a category to get inspired!</p>
 
-    
-    <form method="get" class="mb-4">
-      <div class="d-flex justify-content-center gap-2 flex-wrap">
-        {% for value, label in categories %}
-          <button type="submit" name="category" value="{{ value }}" class="btn {% if selected_category == value %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill">
-            {{ label }}
-          </button>
-        {% endfor %}
-      </div>
+    <form method="get" class="mb-4 d-flex justify-content-center gap-2 flex-wrap">
+      {% for value, label in categories.items %}
+        <button type="submit" name="category" value="{{ value }}" class="btn {% if selected_category == value %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill">
+          {{ label }}
+        </button>
+      {% endfor %}
     </form>
 
-    {% if video %}
-      <div class="ratio ratio-16x9 mb-3 mx-auto" style="max-width: 700px;">
-        <iframe src="{{ video.url }}" title="{{ video.title }}" allowfullscreen></iframe>
+    {% if video_url %}
+      <div class="ratio ratio-16x9 mb-3">
+        <iframe src="{{ video_url }}" title="Inspiration Video" allowfullscreen class="rounded w-100"></iframe>
       </div>
-      <h5 class="text-center">{{ video.title }}</h5>
-      <span class="badge bg-secondary d-inline-block mx-auto">{{ video.get_category_display }}</span>
+      <div class="text-center">
+       <a href="?category={{ selected_category }}&current={{ video_url }}" class="btn btn-outline-primary rounded-pill">Explore another place</a>
     {% elif selected_category %}
-      <p class="text-center">No videos available for this category.</p>
+      <p class="text-center text-muted mt-4">No videos available for this category at the moment.</p>
     {% else %}
-      <p class="text-center">Select a category to get inspired!</p>
     {% endif %}
-    
+
   </div>
 </section>
-
 {% endblock %}

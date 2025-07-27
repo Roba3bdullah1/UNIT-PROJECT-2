@@ -12,7 +12,7 @@
         <p class="lead">Edit your trip details and save the changes.</p>
       </div>
 
-      <form method="POST" enctype="multipart/form-data">
+      <form method="POST" enctype="multipart/form-data" novalidate >
         {% csrf_token %}
         {{ form.non_field_errors }}
 
@@ -72,7 +72,7 @@
         </div>
 
         <div class="text-center">
-          <button type="submit" class="btn btn-success rounded-pill px-5">Update Trip</button>
+          <button type="submit" class="btn btn-primary rounded-pill px-5">Update Trip</button>
         </div>
       </form>
     </div>

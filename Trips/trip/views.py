@@ -1,13 +1,17 @@
 import random
 from django.shortcuts import render,redirect
 from django.http import HttpRequest, HttpResponse
-from .models import Trip,Comment,InspirationVideo
+from .models import Trip,Comment
 from .forms import TripForm
 from django.contrib import messages
 from django.db.models import Q
 from . import views
 from .forms import CommentForm
 from .models import Trip
+from django.core.paginator import Paginator
+import re
+
+
 
 def all_trips_view(request: HttpRequest):
     trips = Trip.objects.all()
@@ -16,7 +20,11 @@ def all_trips_view(request: HttpRequest):
     if category and category != "all":
         trips = trips.filter(category=category)
     
-    return render(request, "trip/all_trips.html", {"trips": trips,"CategoryChoices": Trip.Category.choices ,"InspirationVideo":InspirationVideo.CATEGORY_CHOICES})
+    paginator = Paginator(trips,6)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    return render(request, "trip/all_trips.html", {"trips": trips,"CategoryChoices": Trip.Category.choices ,"page":page})
 
 
 def trip_detail_view(request:HttpRequest, trip_id:int):
@@ -114,14 +122,75 @@ def add_comment_view(request: HttpRequest, trip_id):
 
     return redirect("trip:trip_detail_view", trip_id=trip_id)
 
+
+
+def convert_to_embed(url):
+   
+    youtube_regex = r"(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/))([^\?&]+)"
+    match = re.search(youtube_regex, url)
+    if match:
+        video_id = match.group(1)
+        return f"https://www.youtube.com/embed/{video_id}"
+    return None
+
 def inspiration_view(request):
+    import random
+
     selected_category = request.GET.get("category")
-    video = None
+    current_video = request.GET.get("current")  
 
-    if selected_category:
-        videos = InspirationVideo.objects.filter(category=selected_category)
-        if videos.exists():
-            video = random.choice(videos)
+    VIDEO_CATEGORIES = {
+        "beach": [
+            'https://www.youtube.com/watch?v=JvSv5L0bXiw',
+            'https://youtu.be/JvSv5L0bXiw?si=CqA0kP_EGTY4MHLX',
+            'https://youtu.be/FuTvGzGaj7o?si=cXBmTk5pplkA1NEk'
+        ],
+        "mountain": [
+            "https://youtu.be/YgL0stuYWLc?si=-T753HMVlzg7ddd1",
+            "https://youtu.be/_JSlbVqTBlQ?si=6IP7Dk5taGLbzvi-",
+            "https://youtu.be/uOkEle1X7fQ?si=vXhAJrkN33lGDzjG",
+        ],
+        "city": [
+            "https://youtu.be/0MQKLUkAUf8?si=Y318EdWnxT1Y-rbI",
+            "https://youtu.be/eHAozTJWnS8?si=F_EzaUV9w7X8qLCI",
+            "https://youtu.be/1KjA50-U3ig?si=SZnNMIuNlHmZ-5SB",
+        ],
+        "nature": [
+            "https://youtu.be/1Z5D1Hvm6sM?si=59-BuGQAiNOIPY7l",
+            "https://youtu.be/es4x5R-rV9s?si=olb0g4Cfc7NPT6XT",
+            "https://youtu.be/SMKPKGW083c?si=ICpg1y4NK8WkKGC2",
+        ],
+    }
 
-    return render(request, "trip/inspiration.html", {"video": video,"categories": InspirationVideo.CATEGORY_CHOICES,"selected_category": selected_category})
+    CATEGORY_CHOICES = {
+        "beach": "Beaches",
+        "mountain": "Mountains",
+        "city": "Cities",
+        "nature": "Nature",
+    }
+
+    def convert_to_embed(url):
+        if "watch?v=" in url:
+            return url.replace("watch?v=", "embed/")
+        elif "youtu.be" in url:
+            video_id = url.split("/")[-1].split("?")[0]
+            return f"https://www.youtube.com/embed/{video_id}"
+        return url
+
+    video_url = None
+    if selected_category in VIDEO_CATEGORIES:
+        choices = VIDEO_CATEGORIES[selected_category]
+        if current_video:
+            current_raw = current_video.replace("embed/", "watch?v=")
+            choices = [url for url in choices if convert_to_embed(url) != current_video]
+
+        if choices:
+            raw_url = random.choice(choices)
+            video_url = convert_to_embed(raw_url)
+
+    return render(request, "trip/inspiration.html", {
+        "categories": CATEGORY_CHOICES,
+        "selected_category": selected_category,
+        "video_url": video_url,
+    })
 

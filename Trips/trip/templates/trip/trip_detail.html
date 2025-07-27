@@ -4,10 +4,18 @@
 <section class="py-5">
     <div class="container flex-grow-1 r">
    <div class="content-container mt-5 p-5 rounded-4 ">
+      <div class="container mt-4">
+        {% if messages %}
+        {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+        {% endfor %}
+        {% endif %}
+      </div>
 
       <div class="row g-5 align-items-start">
-
-  
         <div class="col-md-5">
           {% if trip.image %}
           <img src="{{ trip.image.url }}" alt="{{ trip.title }}" class="img-fluid rounded-4 w-100" style="object-fit: cover; height: 100%;">
@@ -30,8 +38,8 @@
 
       
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <a href="{% url 'trip:update_trip_view' trip.id %}" class="btn btn-dark rounded-pill">Update</a>
-            <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+            <a href="{% url 'trip:update_trip_view' trip.id %}" class="btn btn-primary rounded-pill">Update</a>
+            <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
           </div>
         </div>
 
@@ -117,8 +125,8 @@
         Are you sure you want to delete <strong>{{ trip.title }}</strong>?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a href="{% url 'trip:delete_trip_view' trip.id %}" class="btn btn-danger">Delete</a>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <a href="{% url 'trip:delete_trip_view' trip.id %}" class="btn btn-primary">Delete</a>
       </div>
     </div>
   </div>

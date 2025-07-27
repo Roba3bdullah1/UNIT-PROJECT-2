@@ -44,17 +44,3 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-class InspirationVideo(models.Model):
-    CATEGORY_CHOICES = [
-        ("beach", "Beach"),
-        ("mountain", "Mountain"),
-        ("nature", "Nature"),
-        ("city", "City"),
-    ]
-
-    title = models.CharField(max_length=200)
-    url = models.URLField()
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-
-   
-

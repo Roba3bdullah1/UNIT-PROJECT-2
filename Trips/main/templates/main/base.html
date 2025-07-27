@@ -41,46 +41,51 @@
  <div class="d-flex align-items-center gap-2">
   <a href="{% url 'trip:add_trip_view' %}" class="btn btn-outline-primary  rounded-pill">+ Add Trip</a>
   
-  <div class="dropdown text-center my-3">
-  <button class="btn btn-primary dropdown-toggle rounded-pill px-4" type="button" id="inspirationDropdown" data-bs-toggle="dropdown" aria-expanded="false">Inspire Me</button>
-  <ul class="dropdown-menu rounded-4" aria-labelledby="inspirationDropdown">
-    {% for value, label in inspiration_categories %}
-      <li>
-        <a class="dropdown-item" href="{% url 'trip:inspiration_view' %}?category={{ value }}">
-          {{ label }}
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
+  <div class="my-3">
+  <a href="{% url 'trip:inspiration_view' %}" class="btn btn-primary  rounded-pill px-4" type="button"> Inspire Me ✨</a>
+  
 </div>
 
-  <button class="btn mode-btn" id="light-mode-btn" title="Light Mode">
-    <span class="material-symbols-outlined">light_mode</span>
-  </button>
-  <button class="btn mode-btn" id="dark-mode-btn" title="Dark Mode">
-    <span class="material-symbols-outlined">dark_mode</span>
-  </button>
 </div>
     </div>
   </nav>
 
+  <main class="flex-grow-1">
+    {% block content %}{% endblock %}
+  </main>
 
-  {% block content %}{% endblock %}
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-  
-  {% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  {% block extra_js %}{% endblock %}
+
+<footer class="bg-white">
+  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center py-3">
+    
+    <div class="d-flex align-items-center mb-3 mb-md-0">
+      <a class="navbar-brand fs-5 mb-0 me-3" href="{% url 'main:home_view' %}">MyTrip</a>
+      <p class="mb-0 text-muted">Discover. Share. Inspire. Start your journey with us today.</p>
     </div>
-  {% endfor %}
-{% endif %}
+    
+    <ul class="nav mb-3 mb-md-0">
+      <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'main:home_view' %}">Home</a></li>
+      <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'trip:all_trips_view' %}">Trips</a></li>
+      <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'main:contact_view' %}">Contact</a></li>
+    </ul>
+    
+    <div class="d-flex align-items-center gap-3">
+      <a href="#" class="text-muted"><i class="fab fa-twitter fa-lg"></i></a>
+      <a href="#" class="text-muted"><i class="fab fa-instagram fa-lg"></i></a>
+      <a href="#" class="text-muted"><i class="fab fa-facebook fa-lg"></i></a>
+    </div>
+    
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <div class="text-center text-muted py-3" style="font-size: 0.9rem;">
+    2025 | MyTrip. All rights reserved.
+  </div>
+</footer>
 
-{% block extra_js %}{% endblock %}
 </body>
 </html>

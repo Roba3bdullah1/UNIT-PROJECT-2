@@ -6,11 +6,13 @@
   <div class="container flex-grow-1">
     <div class="content-container p-4 bg-white rounded-4 shadow-sm mx-auto" style="max-width: 800px;">
 
-      {% if success_message %}
-        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-          {{ success_message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
       {% endif %}
 
       <div class="text-center mb-4">
@@ -20,26 +22,31 @@
 
       <form method="POST" novalidate>
         {% csrf_token %}
+        {{ form.non_field_errors }}
 
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="first_name" class="form-label">First Name</label>
-            <input type="text" class="form-control" name="first_name" required>
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+            {{ form.first_name.errors }}
           </div>
           <div class="col-md-6 mb-3">
-            <label for="last_name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" name="last_name" required>
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+            {{ form.last_name.errors }}
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="email" class="form-label">Email Address</label>
-          <input type="email" class="form-control" name="email" required>
+          {{ form.email.label_tag }}
+          {{ form.email }}
+          {{ form.email.errors }}
         </div>
 
         <div class="mb-3">
-          <label for="message" class="form-label">Your Message</label>
-          <textarea class="form-control" name="message" rows="4" required></textarea>
+          {{ form.message.label_tag }}
+          {{ form.message }}
+          {{ form.message.errors }}
         </div>
 
         <div class="text-center">
