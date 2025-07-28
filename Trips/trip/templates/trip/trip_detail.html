@@ -68,8 +68,6 @@
   </div>
 </div>
 
-
-
   <h4 class="mb-1">Add Comment</h4>
   <form action="{% url 'trip:add_comment_view' trip.id %}" method="post" style="max-width: 450px;">
     {% csrf_token %}
@@ -79,7 +77,7 @@
 </div>
 
 <div class="mb-3">
-  <textarea name="comment" class="form-control" rows="4" placeholder="Write your comment here...">{{ form.comment.value }}</textarea>
+  <textarea name="comment" class="form-control" rows="4" placeholder="Write your comment here..."></textarea>
 </div>
 
 <div class="mb-3">
@@ -110,42 +108,40 @@
       <span class="badge category-badge mb-2" style="font-size: 0.85rem;">{{ related.get_category_display }}</span>
       <h6 class="card-title mb-2" style="font-size: 1.1rem;">{{ related.title }}</h6>
       <p class="card-text text-muted mb-0" style="font-size: 0.9rem;">📍 {{ related.location }}</p>
+            {% if related.average_rating %}
+                      <p class="mb-2 fw-bold">
+                        {% with rating=related.average_rating|floatformat:0 %}
+                          {% if rating == "1" %}
+                            🔹 😡 Terrible Trip
+                          {% elif rating == "2" %}
+                            🔹 😐 Not Great
+                          {% elif rating == "3" %}
+                            🔹 😊 Nice Trip
+                          {% elif rating == "4" %}
+                            🔹 😍 Amazing Experience
+                          {% else %}
+                            🔹 Rating: {{ rating }}
+                          {% endif %}
+                        {% endwith %}
+                      </p>
+                    {% else %}
+                      <p class="text-muted mb-2">🔹 No ratings yet</p>
+                    {% endif %}
 
-
-            {% if trip.average_rating %}
-              <p class="mb-2" >
-                {% with rating=trip.average_rating|floatformat:0 %}
-                  {% if rating == "1" %}
-                    🔹  😡 Terrible Trip
-                  {% elif rating == "2" %}
-                    🔹  😐 Not Great
-                  {% elif rating == "3" %}
-                    🔹  😊 Nice Trip
-                  {% elif rating == "4" %}
-                    🔹  😍 Amazing Experience
-                  {% else %}
-                    {{ rating }}
-                  {% endif %}
-                {% endwith %}
-              </p>
-            {% else %}
-              <p class="text-muted mb-2" >  🔹 No ratings yet</p>
-            {% endif %}
-    </div>
-  </a>
-</div> 
-          </div>
+                    <a href="{% url 'trip:trip_detail_view' related.id %}" class="btn btn-outline-primary w-100">See Details</a>
+                  </div>
+                </a>
+              </div>
+            </div>
           {% empty %}
-          <p>No related trips available.</p>
+            <p>No related trips available.</p>
           {% endfor %}
         </div>
       </div>
-
     </div>
   </div>
-
-</div>
 </section>
+
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog">

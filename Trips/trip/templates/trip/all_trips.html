@@ -52,25 +52,24 @@
             <p class="card-text text-muted">📍 {{ trip.location }}</p>
 
             {% if trip.average_rating %}
-              <p class="mb-2 fw-bold ">
-                
-                {% with rating=trip.average_rating|floatformat:0 %}
-                  {% if rating == "1" %}
-                    🔹  😡 Terrible Trip 
-                  {% elif rating == "2" %}
-                    🔹  😐 Not Great 
-                  {% elif rating == "3" %}
-                    🔹  😊 Nice Trip 
-                  {% elif rating == "4" %}
-                    🔹  😍 Amazing Experience 
-                  {% else %}
-                    {{ rating }}
-                  {% endif %}
-                {% endwith %}
-              </p>
-            {% else %}
-              <p class="text-muted mb-2">  🔹 No ratings yet</p>
-            {% endif %}
+              <p class="mb-2 fw-bold">
+          {% with rating=trip.average_rating|floatformat:0 %}
+            {% if rating == "1" %}
+             🔹 😡 Terrible Trip
+           {% elif rating == "2" %}
+             🔹 😐 Not Great
+           {% elif rating == "3" %}
+             🔹 😊 Nice Trip
+           {% elif rating == "4" %}
+             🔹 😍 Amazing Experience
+           {% else %}
+             🔹 Rating: {{ rating }}
+           {% endif %}
+         {% endwith %}
+          </p>
+           {% else %}
+            <p class="text-muted mb-2">🔹 No ratings yet</p>
+           {% endif %}
 
             <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
           </div>

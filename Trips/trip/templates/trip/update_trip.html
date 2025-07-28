@@ -47,12 +47,19 @@
         </div>
 
         <div class="mb-3">
-             {{ form.image.label_tag }}
-        {% if trip.image %}
-  <div class="mb-2">
-    <img  class="rounded-4" src="{{ trip.image.url }}" alt="Current Image" style="max-width: 200px; height: auto;">
-  </div>
-{% endif %}
+  {{ form.image.label_tag }}
+
+
+  {% if trip.image %}
+    <div class="mb-2">
+      <img class="rounded-4" src="{{ trip.image.url }}" alt="Current Image" style="max-width: 200px; height: auto;">
+    </div>
+  {% endif %}
+
+
+  <input type="file" name="image" class="form-control">
+  {{ form.image.errors }}
+</div>
         
 
   

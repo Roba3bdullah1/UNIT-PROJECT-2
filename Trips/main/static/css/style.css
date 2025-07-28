@@ -50,7 +50,7 @@ main {
   font-size: 2rem;
   transform: rotate(-25deg);
   margin-right: 6px;
-  animation: fly 2.5s infinite alternate ease-in-out;
+  animation: fly 0.7s infinite alternate ease-in-out !important;
 }
 
 @keyframes fly {
@@ -112,17 +112,6 @@ main {
   position: relative;
   display: inline-block;
   padding: 0 8px;
-}
-
-
-.plane-icon {
-  position: absolute;
-  top: -2.2em;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.5em;
-  color: #007bff;
-  animation: flyAround 2.5s ease-out forwards;
 }
 
 

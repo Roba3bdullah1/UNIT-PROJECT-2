@@ -5,15 +5,14 @@ from trip.forms import TripForm
 from django.contrib import messages
 from main.forms import ContactForm
 from main.models import Contact
-
+from django.db.models import Avg
 
 def home_view(request:HttpRequest):
-    trips = Trip.objects.order_by('-created_at')[0:3]
+    trips = Trip.objects.annotate(average_rating=Avg('comment__rating')).order_by('-created_at')[:3]
+    
     categories = Trip.Category.choices  
 
-    return render(request, 'main/home.html', { 'trips': trips,'categories': categories })
-
-
+    return render(request, 'main/home.html', { 'trips': trips, 'categories': categories })
 
 def contact_view(request):
     if request.method == 'POST':

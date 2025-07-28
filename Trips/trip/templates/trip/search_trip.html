@@ -1,7 +1,6 @@
 {% extends 'main/base.html' %}
 
 {% block title %}
-
 {% endblock %}
 
 {% block content %}
@@ -14,29 +13,30 @@
         <p class="lead">Find trips by title, city, or category.</p>
       </div>
       
-        <form method="GET" action="{% url 'trip:search_trip_view' %}" class="row g-2 align-items-center justify-content-center">
-          <div class="col-md-4">
-            <input 
-              type="text" 
-              name="search" 
-              class="form-control" 
-              placeholder="Search by title or city" 
-              value="{{ search_input|default:'' }}">
-          </div>
-          <div class="col-md-4">
-            <select name="category" class="form-select">
-              <option value="" {% if not category_filter %}selected{% endif %}>All Categories</option>
-              {% for value, label in categories %}
-                <option value="{{ value }}" {% if category_filter == value %}selected{% endif %}>{{ label }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-md-2 d-grid">
-            <button type="submit" class="btn btn-primary">
-              <span class="material-symbols-outlined">search</span>
-            </button>
-          </div>
-        </form>
+      <form method="GET" action="{% url 'trip:search_trip_view' %}" class="row g-2 align-items-center justify-content-center">
+        <div class="col-md-4">
+          <input 
+            type="text" 
+            name="search" 
+            class="form-control" 
+            placeholder="Search by title or city" 
+            value="{{ search_input|default:'' }}">
+        </div>
+        <div class="col-md-4">
+          <select name="category" class="form-select">
+            <option value="" {% if not category_filter %}selected{% endif %}>All Categories</option>
+            {% for value, label in categories %}
+              <option value="{{ value }}" {% if category_filter == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2 d-grid">
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">search</span>
+          </button>
+        </div>
+      </form>
+
       <div class="row g-4 p-5">
         {% if trips %}
           {% for trip in trips %}
@@ -47,25 +47,26 @@
                   <span class="badge bg-primary mb-2">{{ trip.get_category_display }}</span>
                   <h5 class="card-title">{{ trip.title }}</h5>
                   <p class="card-text text-muted">📍 {{ trip.location }}</p>
+
                   {% if trip.average_rating %}
-              <p class="mb-2">
-                {% with rating=trip.average_rating|floatformat:0 %}
-                  {% if rating == "1" %}
-                    🔹  😡 Terrible Trip
-                  {% elif rating == "2" %}
-                    🔹  😐 Not Great
-                  {% elif rating == "3" %}
-                    🔹  😊 Nice Trip
-                  {% elif rating == "4" %}
-                    🔹  😍 Amazing Experience
+                    <p class="mb-2 fw-bold">
+                      {% with rating=trip.average_rating|floatformat:0 %}
+                        {% if rating == "1" %}
+                          🔹 😡 Terrible Trip
+                        {% elif rating == "2" %}
+                          🔹 😐 Not Great
+                        {% elif rating == "3" %}
+                          🔹 😊 Nice Trip
+                        {% elif rating == "4" %}
+                          🔹 😍 Amazing Experience
+                        {% else %}
+                          🔹 Rating: {{ rating }}
+                        {% endif %}
+                      {% endwith %}
+                    </p>
                   {% else %}
-                    {{ rating }}
+                    <p class="text-muted mb-2">🔹 No ratings yet</p>
                   {% endif %}
-                {% endwith %}
-              </p>
-            {% else %}
-              <p class="text-muted mb-2">  🔹 No ratings yet</p>
-            {% endif %}
 
                   <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
                 </div>
@@ -74,7 +75,6 @@
           {% endfor %}
         {% else %}
           <p class="text-center">No trips found matching your criteria.</p>
-         
         {% endif %}
       </div>
 

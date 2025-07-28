@@ -19,28 +19,26 @@ def all_trips_view(request: HttpRequest):
     category = request.GET.get("category")
     if category and category != "all":
         trips = trips.filter(category=category)
+
+
+    trips = trips.annotate(average_rating=Avg('comment__rating'))
     
     paginator = Paginator(trips,6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-  
-    for trip in page:
-        avg_rating = trip.comment_set.aggregate(avg=Avg('rating'))['avg']
-        trip.average_rating = round(avg_rating, 1) if avg_rating else None
-
+   
     return render(request, "trip/all_trips.html", {"page": page,"CategoryChoices": Trip.Category.choices,})
 
-def trip_detail_view(request:HttpRequest, trip_id:int):
+def trip_detail_view(request, trip_id):
     trip = Trip.objects.get(pk=trip_id)
-    related_trips = Trip.objects.filter(category=trip.category)[0:3]
-    comments= Comment.objects.filter(trip=trip)
+    comments = Comment.objects.filter(trip=trip).order_by('-created_at')  
     form = CommentForm()
-    rating_choices = Comment.RatingChoices.choices
+    
+    related_trips = Trip.objects.filter(category=trip.category)[:3]
+    related_trips = related_trips.annotate(average_rating=Avg('comment__rating'))
 
-    return render(request, 'trip/trip_detail.html', {"trip": trip,"related_trips": related_trips,"comments": comments,"form": form,"rating_choices": rating_choices,
-    })
-                           
+    return render(request, 'trip/trip_detail.html', {'trip': trip,'comments': comments,'form': form,'related_trips': related_trips,'rating_choices': Comment.RatingChoices.choices, }) 
 def add_trip_view(request: HttpRequest):
 
     form = TripForm()
@@ -105,14 +103,9 @@ def search_trip_view(request: HttpRequest):
     if not search_input and not category_filter:
         trips = Trip.objects.none()
 
-    context = {
-        "trips": trips,
-        "search_input": search_input,
-        "category_filter": category_filter,
-        "categories": Trip.Category.choices,  
-    }
+    trips = trips.annotate(average_rating=Avg('comment__rating'))
 
-    return render(request, "trip/search_trip.html", context)
+    return render(request, "trip/search_trip.html", {"trips": trips,"search_input": search_input,"category_filter": category_filter, "categories": Trip.Category.choices, })
 
 
 def add_comment_view(request: HttpRequest, trip_id):
