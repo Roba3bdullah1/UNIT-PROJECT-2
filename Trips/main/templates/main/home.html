@@ -5,7 +5,7 @@
 
 {% block content %}
 <section class="hero">
-  <div class="container ">
+  <div class="container">
 
     <div class="text-center mb-4">
      <h1 class="display-5 fw-bold">Life is a journey, <span class="text-share">share it</span> !</h1>
@@ -14,12 +14,7 @@
    <div class="search-bar rounded-4 shadow p-3 bg-white my-5 ">
      <form method="GET" action="{% url 'trip:search_trip_view' %}" class="row g-2 align-items-center justify-content-center">
           <div class="col-md-4">
-            <input 
-              type="text" 
-              name="search" 
-              class="form-control" 
-              placeholder="Search by title or city" 
-              value="{{ search_input|default:'' }}">
+            <input type="text" name="search" class="form-control" placeholder="Search by title or city" value="{{ search_input|default:'' }}">
           </div>
           <div class="col-md-4">
             <select name="category" class="form-select">
@@ -37,37 +32,55 @@
         </form>
     </div>
 
-  
-    <div class="content-container mt-7 rounded-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-  <div class="lasted-tripss-title m-0">
-    <h3 class="mb-0 display-9 fw-bold ">Lasted Trips</h3>
+    <div class="content-container mt-5 rounded-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 text-center text-md-start">
+    <div class="lasted-tripss-title mb-2 mb-md-0">
+      <h3 class="mb-0 fw-bold fs-4">Lasted Trips</h3>
+    </div>
+    <div class="more-link">
+      <a href="{% url 'trip:all_trips_view' %}" class="fw-bold d-inline-flex align-items-center gap-1">
+        More <span class="material-symbols-outlined">chevron_right</span>
+      </a>
+    </div>
   </div>
-  <div class="more-link m-0">
-    <a href="{% url 'trip:all_trips_view' %}" class=" display-9 fw-bold d-inline-flex align-items-center gap-1">
-      More <span class="material-symbols-outlined">chevron_right</span>
-    </a>
-  </div>
-</div>
-      <div class="row g-4">
-        {% for trip in trips %}
-        <div class="col-12 col-sm-6 col-md-4">
-          <div class="card trip-card h-100 shadow-sm">
-            <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
-            <div class="card-body">
-              <span class="badge category-badge mb-2">{{ trip.get_category_display }}</span>
-              <h5 class="card-title">{{ trip.title }}</h5>
-              <p class="card-text text-muted"> 📍 {{ trip.location }}</p>
-              <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
-            </div>
-          </div>
+  <div class="row g-4">
+    {% for trip in trips %}
+    <div class="col-12 col-sm-6 col-md-4">
+     <div class="card trip-card h-100 shadow-sm">
+        <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
+        <div class="card-body">
+          <span class="badge category-badge mb-2">{{ trip.get_category_display }}</span>
+          <h5 class="card-title">{{ trip.title }}</h5>
+          <p class="card-text text-muted">📍 {{ trip.location }}</p>
+
+          {% if trip.average_rating %}
+          <p class="mb-2">
+            {% with rating=trip.average_rating|floatformat:0 %}
+              {% if rating == "1" %}
+                🔹 😡 Terrible Trip
+              {% elif rating == "2" %}
+                🔹 😐 Not Great
+              {% elif rating == "3" %}
+                🔹 😊 Nice Trip
+              {% elif rating == "4" %}
+                🔹 😍 Amazing Experience
+              {% else %}
+                {{ rating }}
+              {% endif %}
+            {% endwith %}
+          </p>
+          {% else %}
+          <p class="text-muted mb-2">🔹 No ratings yet</p>
+          {% endif %}
+
+          <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
         </div>
-        {% empty %}
-        <p class="text-center">No trips found.</p>
-        {% endfor %}
       </div>
     </div>
-
+    {% empty %}
+    <p class="text-center">No trips found</p>
+    {% endfor %}
   </div>
-</section>
+</div>
+
 {% endblock %}

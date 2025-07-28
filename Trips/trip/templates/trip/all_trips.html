@@ -15,51 +15,71 @@
         {% endif %}
       </div>
 
-      <div class="row mb-3">
-        <div class="col-md-6 d-flex align-items-center">
-          <h3 class="mb-0 display-9">All Trips</h3>
-        </div>
+     <div class="row mb-3">
+  <div class="col-md-6 d-flex align-items-center">
+    <h3 class="fw-bold mb-0 ms-3" style="font-size: 1.5rem;">All Trips</h3>
+  </div>
 
-        <div class="col-md-6 mt-3 mt-md-0">
-          <div class="d-flex justify-content-end">
-            <form method="get" class="d-flex align-items-center gap-2">
-              <label for="category" class="mb-0" style="font-size: 0.9rem;">Category:</label>
-              <select name="category" id="category" class="form-select form-select-sm" style="min-width: 110px; max-width: 150px;">
-                <option value="all">All</option>
-                {% for value, label in CategoryChoices %}
-                  <option value="{{ value }}" {% if value == selected_category %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-              </select>
-              <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4">Filter</button>
-            </form>
+  <div class="col-md-6 mt-3 mt-md-0">
+    <div class="d-flex justify-content-end">
+      <form method="get" class="d-flex align-items-center gap-2">
+        <label for="category" class="mb-0 fw-bold" style="font-size: 1rem;">Category:</label>
+        <select name="category" id="category" class="form-select form-select-sm" style="min-width: 110px; max-width: 150px;">
+          <option value="all">All</option>
+          {% for value, label in CategoryChoices %}
+            <option value="{{ value }}" {% if value == selected_category %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4">Filter</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+    <div class="row g-4 mb-3">
+  {% if page %}
+    {% for trip in page %}
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card trip-card h-100">
+          <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
+          <div class="card-body">
+            <span class="badge category-badge mb-2">{{ trip.get_category_display }}</span>
+            <h5 class="card-title">
+              <a href="{% url 'trip:trip_detail_view' trip.id %}" class="text-decoration-none text-dark">
+                {{ trip.title }}
+              </a>
+            </h5>
+            <p class="card-text text-muted">📍 {{ trip.location }}</p>
+
+            {% if trip.average_rating %}
+              <p class="mb-2 fw-bold ">
+                
+                {% with rating=trip.average_rating|floatformat:0 %}
+                  {% if rating == "1" %}
+                    🔹  😡 Terrible Trip 
+                  {% elif rating == "2" %}
+                    🔹  😐 Not Great 
+                  {% elif rating == "3" %}
+                    🔹  😊 Nice Trip 
+                  {% elif rating == "4" %}
+                    🔹  😍 Amazing Experience 
+                  {% else %}
+                    {{ rating }}
+                  {% endif %}
+                {% endwith %}
+              </p>
+            {% else %}
+              <p class="text-muted mb-2">  🔹 No ratings yet</p>
+            {% endif %}
+
+            <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
           </div>
         </div>
       </div>
+    {% endfor %}
+  {% endif %}
+</div>
 
- 
-      <div class="row g-4 mb-3">
-        {% if page %}
-          {% for trip in page %}
-            <div class="col-12 col-sm-6 col-md-4">
-              <div class="card trip-card h-100">
-                <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
-                <div class="card-body">
-                  <span class="badge category-badge mb-2">{{ trip.get_category_display }}</span>
-                  <h5 class="card-title">
-                    <a href="{% url 'trip:trip_detail_view' trip.id %}" class="text-decoration-none text-dark">
-                      {{ trip.title }}
-                    </a>
-                  </h5>
-                  <p class="card-text text-muted">📍 {{ trip.location }}</p>
-                  <a href="{% url 'trip:trip_detail_view' trip.id %}" class="btn btn-outline-primary w-100">See Details</a>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        {% endif %}
-      </div>
-
-   
       {% if page.has_other_pages %}
         <nav aria-label="Page navigation example" >
           <ul class="pagination justify-content-center ">

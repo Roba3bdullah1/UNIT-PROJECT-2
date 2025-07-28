@@ -12,7 +12,7 @@
         <p class="lead">Edit your trip details and save the changes.</p>
       </div>
 
-      <form method="POST" enctype="multipart/form-data" novalidate >
+      <form method="POST" action="{% url 'trip:update_trip_view' trip.id %}" enctype="multipart/form-data" novalidate >
         {% csrf_token %}
         {{ form.non_field_errors }}
 

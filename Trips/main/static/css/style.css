@@ -107,8 +107,24 @@ main {
 
 .text-share{
   color:rgb(53, 133, 198);
-
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  position: relative;
+  display: inline-block;
+  padding: 0 8px;
 }
+
+
+.plane-icon {
+  position: absolute;
+  top: -2.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5em;
+  color: #007bff;
+  animation: flyAround 2.5s ease-out forwards;
+}
+
 
 .category-badge {
   background-color: rgb(53, 133, 198)!important;
@@ -134,7 +150,7 @@ main {
 }
 
 .mt-7 {
-  margin-top: 10px; 
+  margin-top: 1px; 
 }
 
 .content-container {
@@ -173,6 +189,7 @@ main {
     font-size: 1rem;
   }
 }
+
 
 
 .hero {

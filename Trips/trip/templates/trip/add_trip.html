@@ -12,7 +12,7 @@
         <p class="lead">Share your new journey with the community.</p>
       </div>
 
-      <form method="POST" enctype="multipart/form-data" novalidate>
+      <form method="POST"  action="{% url 'trip:add_trip_view' %}" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         {{ form.non_field_errors }}
 

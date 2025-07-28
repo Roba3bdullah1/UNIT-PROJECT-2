@@ -20,9 +20,7 @@
     <div class="container d-flex justify-content-between align-items-center">
 
       <a class="navbar-brand" href="{% url 'main:home_view' %}">
-        <span class="material-symbols-outlined flight">flight</span>
-        MyTrip
-      </a>
+        <span class="material-symbols-outlined flight">flight</span>MyTrip</a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
         aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,16 +32,15 @@
           <li class="nav-item"><a class="nav-link active" href="{% url 'main:home_view' %}">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'trip:all_trips_view' %}">Trips</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'main:contact_view' %}">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'main:messages_view' %}">Messages</a></li>
         </ul>
       </div>
 
 
  <div class="d-flex align-items-center gap-2">
-  <a href="{% url 'trip:add_trip_view' %}" class="btn btn-outline-primary  rounded-pill">+ Add Trip</a>
+  <a href="{% url 'trip:add_trip_view' %}" class="btn btn-outline-primary rounded-pill">+ Add Trip</a>
   
   <div class="my-3">
-  <a href="{% url 'trip:inspiration_view' %}" class="btn btn-primary  rounded-pill px-4" type="button"> Inspire Me ✨</a>
+  <a href="{% url 'trip:inspiration_view' %}" class="btn btn-primary rounded-pill px-4" type="button"> Inspire Me ✨</a>
   
 </div>
 
@@ -73,7 +70,6 @@
       <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'main:home_view' %}">Home</a></li>
       <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'trip:all_trips_view' %}">Trips</a></li>
       <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'main:contact_view' %}">Contact</a></li>
-       <li class="nav-item"><a class="nav-link px-2 text-muted" href="{% url 'main:messages_view' %}">Messages</a></li>
     </ul>
     
     <div class="d-flex align-items-center gap-3">

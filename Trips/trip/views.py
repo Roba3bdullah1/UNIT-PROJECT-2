@@ -5,10 +5,10 @@ from .models import Trip,Comment
 from .forms import TripForm
 from django.contrib import messages
 from django.db.models import Q
-from . import views
 from .forms import CommentForm
 from .models import Trip
 from django.core.paginator import Paginator
+from django.db.models import Avg
 import re
 
 
@@ -24,17 +24,23 @@ def all_trips_view(request: HttpRequest):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-    return render(request, "trip/all_trips.html", {"trips": trips,"CategoryChoices": Trip.Category.choices ,"page":page})
+  
+    for trip in page:
+        avg_rating = trip.comment_set.aggregate(avg=Avg('rating'))['avg']
+        trip.average_rating = round(avg_rating, 1) if avg_rating else None
 
+    return render(request, "trip/all_trips.html", {"page": page,"CategoryChoices": Trip.Category.choices,})
 
 def trip_detail_view(request:HttpRequest, trip_id:int):
     trip = Trip.objects.get(pk=trip_id)
     related_trips = Trip.objects.filter(category=trip.category)[0:3]
     comments= Comment.objects.filter(trip=trip)
     form = CommentForm()
+    rating_choices = Comment.RatingChoices.choices
 
-    return render(request, 'trip/trip_detail.html', {"trip" : trip , 'related_trips': related_trips , 'comments': comments,'form': form})
-                                            
+    return render(request, 'trip/trip_detail.html', {"trip": trip,"related_trips": related_trips,"comments": comments,"form": form,"rating_choices": rating_choices,
+    })
+                           
 def add_trip_view(request: HttpRequest):
 
     form = TripForm()
@@ -116,7 +122,7 @@ def add_comment_view(request: HttpRequest, trip_id):
             trip=trip_object,
             name=request.POST["name"],
             comment=request.POST["comment"],
-            rating=request.POST.get("rating", "😊")  
+            rating=request.POST["rating"]  
         )
         new_comment.save()
 
@@ -134,7 +140,6 @@ def convert_to_embed(url):
     return None
 
 def inspiration_view(request):
-    import random
 
     selected_category = request.GET.get("category")
     current_video = request.GET.get("current")  
@@ -142,8 +147,8 @@ def inspiration_view(request):
     VIDEO_CATEGORIES = {
         "beach": [
             'https://www.youtube.com/watch?v=JvSv5L0bXiw',
-            'https://youtu.be/JvSv5L0bXiw?si=CqA0kP_EGTY4MHLX',
-            'https://youtu.be/FuTvGzGaj7o?si=cXBmTk5pplkA1NEk'
+            'https://youtu.be/FuTvGzGaj7o?si=cXBmTk5pplkA1NEk',
+            'https://www.youtube.com/watch?v=hB_l79mVx9c'
         ],
         "mountain": [
             "https://youtu.be/YgL0stuYWLc?si=-T753HMVlzg7ddd1",
@@ -153,7 +158,7 @@ def inspiration_view(request):
         "city": [
             "https://youtu.be/0MQKLUkAUf8?si=Y318EdWnxT1Y-rbI",
             "https://youtu.be/eHAozTJWnS8?si=F_EzaUV9w7X8qLCI",
-            "https://youtu.be/1KjA50-U3ig?si=SZnNMIuNlHmZ-5SB",
+            "https://www.youtube.com/watch?v=WHNNHAoaZD4",
         ],
         "nature": [
             "https://youtu.be/1Z5D1Hvm6sM?si=59-BuGQAiNOIPY7l",
@@ -169,14 +174,6 @@ def inspiration_view(request):
         "nature": "Nature",
     }
 
-    def convert_to_embed(url):
-        if "watch?v=" in url:
-            return url.replace("watch?v=", "embed/")
-        elif "youtu.be" in url:
-            video_id = url.split("/")[-1].split("?")[0]
-            return f"https://www.youtube.com/embed/{video_id}"
-        return url
-
     video_url = None
     if selected_category in VIDEO_CATEGORIES:
         choices = VIDEO_CATEGORIES[selected_category]
@@ -188,9 +185,5 @@ def inspiration_view(request):
             raw_url = random.choice(choices)
             video_url = convert_to_embed(raw_url)
 
-    return render(request, "trip/inspiration.html", {
-        "categories": CATEGORY_CHOICES,
-        "selected_category": selected_category,
-        "video_url": video_url,
-    })
+    return render(request, "trip/inspiration.html", { "categories": CATEGORY_CHOICES,"selected_category": selected_category,"video_url": video_url,})
 
