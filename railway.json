@@ -4,6 +4,6 @@
         "builder": "NIXPACKS"
     },
     "deploy": {
-        "startCommand": "cd Trips && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn Trips.wsgi"
+        "startCommand": "cd UNIT-PROJECT-2 && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn Trips.wsgi"
     }
 }
