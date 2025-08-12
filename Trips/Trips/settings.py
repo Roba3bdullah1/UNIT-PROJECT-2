@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-w)5$4gqageee&l_gh$)&#qmj(@-@36vdtpx(jzj=pf5q9tp3mk
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://mytrip-production-144c.up.railway.app", "http://127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ['https://mytrip-production.up.railway.app'], "http://127.0.0.1"
 
 
 # Application definition
